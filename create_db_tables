@@ -1,0 +1,218 @@
+/*****************************************
+Course: IMT 577
+Instructor: Sean Pettersen
+IT Session: 5
+Date: 04/25/2023
+Notes: Create stage & File Formatting for
+       upload.
+
+Steps:
+    1. Create IT Session Database
+    2. Create IT Session DW
+    3. Create IT Session Stage
+    4. Create File Format
+    5. Create Tables
+    6. Copy Data into Stage > Table
+    7. Share IT Session Database
+*****************************************/
+--Utility Code
+--DROP DATABASE IMT577_ITSESSION_DW_SEAN_PETTERSEN;
+--DROP WAREHOUSE IMT577_ITSESSION_DW;
+--DROP STAGE IMT577_ITSESSION_DW_SEAN_PETTERSEN;
+--DROP FILE FORMAT CSV_SKIP_HEADER;
+--DROP TABLE STAGE_STARWARS_CHARACTERS;
+--SELECT * FROM STAGE_STARWARS_CHARACTERS;
+--SELECT COUNT(*) FROM STAGE_STARWARS_CHARACTERS;
+--TRUNCATE TABLE IF EXISTS STAGE_STARWARS_CHARACTERS;
+
+//STEP 1 -  Create IT Session Database
+    --Open Canvas
+    --Download model and .csv files
+    --Save files on your drive
+CREATE OR REPLACE DATABASE IMT577_IT_SESSIONS_DW_ALI_LO;
+
+/******* Naming Conventions for ITSessions ******/
+    --WEEK 5: 
+
+/******* NAMING CONVENTIONS FOR ASSIGNMENTS ******/
+    --WEEK 5: When you submit your final database, you need to name it IMT577_FIRSTNAME_LASTNAME_STAGING 
+    --WEEK 6: When you submit your final database, you need to name it IMT577_FIRSTNAME_LASTNAME_DIMENSIONS
+    --WEEK 7: When you submit your final database, you need to name it IMT577_FIRSTNAME_LASTNAME_FACTS
+    --WEEK 8: When you submit your final database, you need to name it IMT577_FIRSTNAME_LASTNAME_VIEWS
+    
+//STEP 2 - Create IT Session DW
+CREATE OR REPLACE WAREHOUSE "IMT577_IT_SESSIONS_DW_ALI_LO" WITH WAREHOUSE_SIZE = 'XSMALL' AUTO_SUSPEND = 600 AUTO_RESUME = TRUE COMMENT = '';
+
+//STEP 3 - Use Interface to Create Stage
+CREATE OR REPLACE STAGE "IMT577_IT_SESSIONS_DW_ALI_LO"."PUBLIC"."STAGE_ITSESSION";
+
+//STEP 4 - Create File Format
+CREATE OR REPLACE FILE FORMAT CSV_SKIP_HEADER
+type = 'CSV'
+field_delimiter = ','
+FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+skip_header = 1;
+
+CREATE OR REPLACE FILE FORMAT CSV_SKIP_HEADER_DATE
+type = 'CSV'
+field_delimiter = ','
+FIELD_OPTIONALLY_ENCLOSED_BY = '"'
+skip_header = 1
+date_format = 'MM/DD/YY';
+
+//STEP 5 - Create Tables
+CREATE OR REPLACE TABLE STAGE_STARWARS_CHARACTERS(
+    ID NUMBER(38,0),
+    NAME VARCHAR(255),
+    HEIGHT NUMBER(38,0),
+    MASS NUMBER(38,0),
+    HAIRCOLOR VARCHAR(255),
+    SKINHUE VARCHAR(255),
+    EYECOLOR VARCHAR (255),
+    GENDER VARCHAR(50),
+    HOMEWORLD VARCHAR(255),
+    SPECIES VARCHAR(255)
+);
+
+CREATE OR REPLACE TABLE STAGE_STARWARS_SPECIES(
+    ID NUMBER(38,0),
+    NAME VARCHAR(255),
+    CLASSIFICATION VARCHAR(255),
+    DESIGNATION VARCHAR(255),
+    AVERAGEHEIGHT NUMBER(38,0),
+    SKINCOLOR VARCHAR(255),
+    HAIRCOLOR VARCHAR(255),
+    EYECOLOR VARCHAR(255),
+    AVERAGELIFESPAN NUMBER(38,0),
+    LANGUAGE VARCHAR(255),
+    HOMEWORLD VARCHAR(255)
+);
+
+CREATE OR REPLACE TABLE STAGE_STARWARS_PLANETS(
+    ID NUMBER(38,0),
+    NAME VARCHAR(255),
+    ROTATIONPERIOD NUMBER(38,0),
+    ORBITALPERIOD NUMBER(38,0),
+    DIAMETER NUMBER(38,0),
+    CLIMATE VARCHAR(255),
+    GRAVITY VARCHAR(255),
+    TERRAIN VARCHAR(255),
+    SURFACEWATER NUMBER(38,0),
+    POPULATION NUMBER(38,0)
+);
+
+//STEP 6 - Copy from stage to table
+--Use Wizard
+
+//STEP 7 - Share IT Session DB
+--Use Wizard
+
+
+/*****************************************
+Course: IMT 577
+Instructor: Sean Pettersen
+IT Session: 6
+Date: 11/14/2021
+Notes: Create dimension tables & load.
+
+Steps:
+    1. Create dimension tables
+    2. Load Unknown Members
+    3. Load Data
+*****************************************/
+--Utility Code
+--LEFT JOIN
+--INNER JOIN
+--UNION
+--AS
+--DISTINCT
+--CAST
+
+--Clear table for demo
+TRUNCATE Dim_Characters;
+
+--Check that table is clear
+SELECT * FROM Dim_Characters;
+
+--CREATE TABLE
+CREATE OR REPLACE TABLE Dim_Characters(
+    DimCharacterID INT IDENTITY(1,1) CONSTRAINT PK_DimCharacterID PRIMARY KEY NOT NULL --Surrogate Key
+    ,SourceCharactersID INTEGER NOT NULL --Natural Key
+    ,Name VARCHAR(255) NOT NULL
+    ,Height Number(38,0) NOT NULL
+    ,Mass FLOAT(10) NOT NULL
+    ,HairColor VARCHAR(255) NOT NULL
+    ,SkinHue VARCHAR(255) NOT NULL
+    ,EyeColor VARCHAR(255) NOT NULL
+    ,Gender VARCHAR(50) NOT NULL
+    ,Homeworld VARCHAR(255) NOT NULL
+    ,Species VARCHAR(255) NOT NULL
+);
+
+--does the table look like you want it? If not, modify the code and 
+--re-create it or drop and re-create via the web interface.
+SELECT * FROM DIM_CHARACTERS
+--Load unknown members
+INSERT INTO Dim_Characters
+(
+     DimCharacterID
+    ,SourceCharactersID
+    ,Name
+    ,Height
+    ,Mass
+    ,HairColor
+    ,SkinHue
+    ,EyeColor
+    ,Gender
+    ,Homeworld
+    ,Species
+)
+VALUES
+( 
+     -1
+    ,-1
+    ,'Unknown'
+    ,-1
+    ,-1.0
+    ,'Unknown'
+    ,'Unknown'
+    ,'Unknown'
+    ,'Unknown'
+    ,'Unknown'
+    ,'Unknown'
+);
+
+SELECT * FROM Dim_Characters;
+
+--Load characters
+INSERT INTO Dim_Characters
+(
+    
+    SourceCharactersID
+    ,Name
+    ,Height
+    ,Mass
+    ,HairColor
+    ,SkinHue
+    ,EyeColor
+    ,Gender
+    ,Homeworld
+    ,Species
+)
+    SELECT 
+    ID
+    ,Name
+    ,Height
+    ,Mass
+    ,HairColor
+    ,SkinHue
+    ,EyeColor
+    ,Gender
+    ,Homeworld
+    ,Species
+     
+    FROM STAGE_STARWARS_CHARACTERS
+    
+SELECT * FROM STAGE_STARWARS_CHARACTERS;
+
+SELECT * FROM Dim_Characters;
