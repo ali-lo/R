@@ -1,0 +1,125 @@
+/*****************************************
+Course: IMT 577
+Instructor: Sean Pettersen
+IT Session: 7
+Date: 11/14/2021
+Notes: Create fact tables & load.
+
+Steps:
+    1. Create fact tables simple
+    2. Create fact tables aggregate
+    2. Load Data
+*****************************************/
+-- Create Fact Tables 
+CREATE OR REPLACE TABLE Fact_Characters
+(
+     DimCharacterID INTEGER CONSTRAINT FK_DimCharacterID FOREIGN KEY REFERENCES Dim_Characters(DimCharacterID) --Foreign Key
+	,Height FLOAT(10)
+    ,Mass FLOAT(10)
+);
+
+SELECT * FROM FACT_CHARACTERS;
+
+--DROP TABLE IF EXISTS Fact_Characters;
+
+CREATE OR REPLACE TABLE Fact_Species
+(
+    DimSpeciesID INT IDENTITY(1,1) CONSTRAINT PK_DimSpeciesID PRIMARY KEY NOT NULL --Surrogate Key
+    ,DimCharacterID INTEGER CONSTRAINT FK_DimCharacterID FOREIGN KEY REFERENCES Dim_Characters(DimCharacterID) --Foreign Key
+    ,AvgHeight FLOAT(10)
+    ,AvgLifeSpan FLOAT(10)
+);
+
+SELECT * FROM FACT_SPECIES;
+
+
+CREATE OR REPLACE TABLE Fact_Planets
+(
+	DimPlanetID INT CONSTRAINT FK_DimPlanetID FOREIGN KEY REFERENCES Dim_Planets(DimPlanetID) --Surrogate Key
+    ,DimCharacterID INT CONSTRAINT FK_DimCharacterID FOREIGN KEY REFERENCES Dim_Characters(DimCharacterID) --Foreign Key
+    ,DimSpeciesID INT CONSTRAINT FK_DimSpeciesID FOREIGN KEY REFERENCES Dim_Species(DimSpeciesID) --Foreign Key
+	,RotationPeriod INTEGER
+    ,OrbitalPeriod INTEGER
+    ,Diameter INTEGER
+    ,SurfaceWaterPct FLOAT(10)
+    ,Population INTEGER
+);
+
+SELECT * FROM FACT_PLANETS;
+
+--Insert Simple
+INSERT INTO Fact_Characters(
+	DimCharacterID
+	,Height
+	,Mass
+	)
+SELECT DISTINCT   
+    DIM_CHARACTERS.DimCharacterID
+	,STAGE_STARWARS_CHARACTERS.Height
+    ,STAGE_STARWARS_CHARACTERS.Mass
+FROM 
+    STAGE_STARWARS_CHARACTERS
+	INNER JOIN DIM_CHARACTERS 
+    ON DIM_CHARACTERS.SourceCharacterID = STAGE_STARWARS_CHARACTERS.ID
+;
+--Note that it didn't insert any values for Nulls. There were none. 
+--These would be added later if null values are added to the system
+    
+SELECT * FROM FACT_CHARACTERS	
+
+
+INSERT INTO Fact_Species(
+    DimSpeciesID
+    ,DimCharacterID
+    ,AvgHeight
+    ,AvgLifeSpan
+)
+SELECT DISTINCT
+    DIM_SPECIES.DimSpeciesID
+    ,NVL(DIM_CHARACTERS.DimCharacterID, -1)
+    ,STAGE_STARWARS_SPECIES.AverageHeight
+    ,STAGE_STARWARS_SPECIES.AverageLifeSpan
+FROM STAGE_STARWARS_SPECIES
+    INNER JOIN DIM_SPECIES
+    ON DIM_SPECIES.SpeciesID = STAGE_STARWARS_SPECIES.ID
+    LEFT OUTER JOIN DIM_CHARACTERS
+    ON DIM_CHARACTERS.Homeworld = STAGE_STARWARS_SPECIES.Homeworld;
+
+SELECT * FROM FACT_SPECIES;
+--72 rows because some characters are the same species?
+
+--Insert Complex
+INSERT INTO Fact_Planets
+	(
+		 DimPlanetID 
+        ,DimCharacterID
+		,DimSpeciesID
+		,RotationPeriod
+        ,OrbitalPeriod
+        ,Diameter
+        ,SurfaceWaterPct
+        ,Population
+	)
+	SELECT DISTINCT  
+          Dim_Planets.DimPlanetID
+		  ,Dim_Characters.DimCharacterID
+          ,NVL(DIM_SPECIES.DimSpeciesID, -1)
+		  ,Stage_Starwars_Planets.RotationPeriod
+          ,Stage_Starwars_Planets.OrbitalPeriod
+          ,Stage_Starwars_Planets.Diameter
+          ,Stage_Starwars_Planets.SurfaceWater
+          ,Stage_Starwars_Planets.Population
+	FROM Stage_Starwars_Planets
+    	INNER JOIN Dim_Planets 
+        ON Dim_Planets.SourcePlanetID = Stage_Starwars_Planets.ID
+    	INNER JOIN Dim_Characters 
+        ON Dim_Characters.Homeworld = Stage_Starwars_Planets.Name 
+        LEFT OUTER JOIN Dim_Species 
+        ON Dim_Species.Homeworld = Stage_Starwars_Planets.Name;
+    --ORDER BY Dim_Characters.DimCharacterID
+    
+    --There are rows missing why? There are 87 rows in the characters table. Why is it only showing 77?
+    --Characters are from the same planet!!
+    
+
+SELECT * FROM FACT_PLANETS;
