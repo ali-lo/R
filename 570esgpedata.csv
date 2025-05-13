@@ -1,0 +1,51 @@
+Company,StockSymbol,BusinessModel,Athletic_OutdoorRecreation,EstimateCompanySizeEmployees,CompanySize,ESGRiskClassification,ESGRiskRating,TrailingPE,X2024ActualPE,ForwardPE
+Abercrombie and Fitch,NYS:ANF,online,no,"31,700",medium,Low,15,20.8,19.63,17.21
+"Academy Sports & Outdoors, Inc.",NAS:ASO,brick-and-mortar,yes,"22,000",medium,Low,15.7,8.68,9.04,9.09
+"Amazon.com, Inc.",NAS:AMZN,online,no,"1,500,000",large,Medium,30.2,52.85,61.94,41.84
+"American Eagle Outfitter, Inc.",NYS:AEO,online,no,"40,000",medium,Low,28.64,28.36,28.36,14.06
+Boot Barn Holdings Inc. ,NYS:BOOT,brick-and-mortar,no,"8,800",small,Low,16,19.51,20.07,19.49
+"Burlington Stores, Inc.",NYS:BURL,brick-and-mortar,no,"71,000",medium,Medium,21.9,35.95,35.08,25.77
+Capri Holdings Ltd.,NYS:CPRI,brick-and-mortar,no,"15,500",medium,Low,16.9,18.61,19.97,8.30
+"Carter's, Inc.",NYS:CRI,brick-and-mortar,no,"15,200",medium,Low,13.1,11.15,11.17,12.27
+Columbia Sportswear Co.,NAS:COLM,brick-and-mortar,yes,"10,000",small,Low,14.7,20.03,19.51,22.47
+"Designer Brands, Inc.",NYS:DBI,brick-and-mortar,no,"14,000",medium,Low,17.2,20.8,25.42,12.80
+"Dick's Sporting Goods, Inc.",NYS:DKS,online,yes,"55,500",medium,Low,17.3,16.88,17,15.70
+"Dillard's, Inc.",NYS:DDS,brick-and-mortar,no,"29,000",medium,Low,18.2,10.03,10.03,17.61
+Dollar General Corp.,NYS:DG,brick-and-mortar,no,"185,000",large,Medium,21.5,18.03,18.79,18.98
+"Dollar Tree, Inc.",NAS:DLTR,brick-and-mortar,no,"211,800",large,Medium,20.2,19.68,20.67,17.79
+"FIGS, Inc.",NYS:FIGS,online,no,300,small,Low,14.4,40.42,44.73,88.50
+"Five Below, Inc.",NAS:FIVE,brick-and-mortar,no,"22,000",medium,Medium,22.5,26.97,27.69,23.98
+"Foot Locker, Inc.",NYS:FL,brick-and-mortar,yes,"46,000",medium,Low,12.3,9.72,15.48,15.58
+"Gap, Inc.",NYS:GPS,online,no,"85,000",medium,Low,16.6,16.57,15.93,16.69
+"Guess?, Inc.",NYS:GES,online,no,"12,000",medium,Medium,20.8,8.8,9.04,9.59
+"Hanesbrands, Inc.",NYS:HBI,brick-and-mortar,no,"48,000",medium,Low,16.2,12.68,74.67,10.16
+"Hibbett, Inc.",NAS:HIBB,brick-and-mortar,no,"12,500",medium,Low,16.4,10.54,10.52,10.73
+Kohl's Corp.,NYS:KSS,brick-and-mortar,no,"96,000",medium,Low,18.6,8.57,8.61,10.35
+"Kontoor Brands, Inc.",NYS:KTB,brick-and-mortar,no,"13,700",medium,Low,14.6,16.65,15.32,14.47
+"Lands' End, Inc.",NAS:LE,online,no,"4,900",small,Medium,28.6,74.61,-86.73,79.37
+Levi Strauss & Co.,NYS:LEVI,brick-and-mortar,no,"19,000",medium,Low,13.6,73.87,68.16,17.76
+"Lowe's Companies, Inc.",NYS:LOW,brick-and-mortar,no,"280,000",large,Low,12.6,17.55,17.47,19.16
+"Macy's, Inc.",NYS:M,brick-and-mortar,no,"85,500",medium,Medium,21.9,51.53,49.81,7.50
+"Nike, Inc.",NYS:NKE,brick-and-mortar,yes,"83,700",medium,Low,18.9,27.46,27.68,24.21
+"Nordstrom, Inc.",NYS:JWN,brick-and-mortar,no,"54,000",medium,Medium,20.4,24.72,23.91,11.14
+"Ollie's Bargain Outlet Holdings, Inc.",NAS:OLLI,brick-and-mortar,no,"11,500",medium,Medium,23,26.95,25.5,24.51
+On Holding AG,NYS:ONON,brick-and-mortar,yes,"2,300",small,Low,19.6,123.25,121.44,41.67
+"Oxford Industries, Inc.",NYS:OXM,brick-and-mortar,no,"6,000",small,Low,16.7,28.47,28.92,11.57
+PVH Corp.,NYS:PVH,brick-and-mortar,no,"29,000",medium,Low,16.5,10.65,10.32,10.50
+Ralph Lauren Corp.,NYS:RL,brick-and-mortar,no,"23,000",medium,Low,13.9,18.9,18.88,15.24
+"Revolve Group, Inc.",NYS:RVLV,online,no,"1,400",small,Medium,20.6,54.55,52.13,51.81
+"Ross Stores, Inc.",NAS:ROST,brick-and-mortar,no,"108,000",large,Low,17.6,23.83,24.03,22.73
+"Savers Value Village, Inc.",NYS:SVV,brick-and-mortar,no,"2,000",small,Low,19.7,49.68,65.88,24.10
+"Skechers U.S.A., Inc.",NYS:SKX,brick-and-mortar,no,"17,900",medium,Medium,23.2,17.58,17.21,16.68
+"Steve Madden Ltd,",NAS:SHOO,brick-and-mortar,no,"4,200",small,Low,15.7,16.47,17.6,15.55
+"Tapestry, Inc.",NYS:TPR,brick-and-mortar,no,"18,500",medium,Low,14.9,9.94,10.11,7.97
+Target Corp.,NYS:TGT,brick-and-mortar,no,"415,000",large,Low,18.4,17.71,18.34,17.01
+"The Buckle, Inc.",NYS:BKE,brick-and-mortar,no,"8,000",small,Low,16.3,8.77,8.52,10.03
+"The Children's Place, Inc.",NAS:PLCE,online,no,"8,300",small,Low,14.2,6.61,-0.97,3.65
+"The TJX Cos., Inc.",NYS:TJX,brick-and-mortar,no,"340,000",large,Low,16.1,25.25,15.63,23.98
+"Under Armour, Inc.",NYS:UAA,brick-and-mortar,yes,900,small,Low,16.6,7.51,12.47,13.11
+"Urban Outfitters, Inc.",NAS:URBN,brick-and-mortar,no,"28,000",medium,Low,18.9,13.46,13.33,11.83
+"Vera Bradley, Inc.",NAS:VRA,online,no,"2,100",small,Low,15.6,28.08,12.26,12.11
+VF Corp.,NYS:VFC,brick-and-mortar,no,"33,000",medium,Low,14.7,111.9,6.02,9.82
+Victoria's Secret & Co.,NYS:VSCO,brick-and-mortar,no,"30,000",medium,Low,16.9,12.94,7.68,11.63
+"Wolverine World Wide, Inc.",NYS:WWW,brick-and-mortar,yes,"4,100",small,Low,18.9,85.24,218,14.22
