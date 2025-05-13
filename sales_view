@@ -1,0 +1,461 @@
+/************************************************
+**************************Create Simple Views****
+************************************************/
+--Dim_Channel View
+CREATE OR REPLACE SECURE VIEW View_Dim_Channel AS
+SELECT 
+    DimChannelID
+    ,ChannelID
+    ,ChannelCategoryID
+    ,ChannelName
+    ,ChannelCategory
+FROM Dim_Channel;
+
+SELECT * FROM View_Dim_Channel;
+
+--Dim_Customer View
+CREATE OR REPLACE SECURE VIEW View_Dim_Customer AS 
+SELECT 
+    DimCustomerID
+    ,DimLocationID
+    ,CustomerID
+    ,CustomerFullName
+    ,CustomerFirstName
+    ,CustomerLastName
+    ,CustomerGender
+FROM Dim_Customer;
+
+SELECT * FROM View_Dim_Customer;
+
+--Dim_Date View
+CREATE OR REPLACE SECURE VIEW View_Dim_Date AS
+SELECT
+   date_pkey
+   ,date
+   ,full_date_desc
+   ,day_num_in_week
+   ,day_num_in_month
+   ,day_num_in_year
+   ,day_name, day_abbrev
+   ,weekday_ind
+   ,us_holiday_ind
+   ,_holiday_ind
+   ,month_end_ind
+   ,week_begin_date_nkey
+   ,week_begin_date, week_end_date_nkey
+   ,week_end_date
+   ,week_num_in_year
+   ,month_name
+   ,month_abbrev
+   ,month_num_in_year
+   ,yearmonth
+   ,quarter
+   ,yearquarter
+   ,year
+   ,fiscal_week_num
+   ,fiscal_month_num
+   ,fiscal_yearmonth
+   ,fiscal_quarter
+   ,fiscal_yearquarter
+   ,fiscal_halfyear
+   ,fiscal_year
+   ,sql_timestamp
+   ,current_row_ind
+   ,effective_date
+   ,expiration_date
+FROM Dim_Date; 
+
+SELECT * FROM View_Dim_Date;
+
+--Dim_Location View
+CREATE OR REPLACE SECURE VIEW View_Dim_Location AS 
+SELECT
+    DimLocationID
+    ,Address
+    ,City
+    ,PostalCode
+    ,State_Province
+    ,Country
+FROM Dim_Location;
+
+SELECT * FROM View_Dim_Location;
+
+--Dim_Product View
+CREATE OR REPLACE SECURE VIEW View_Dim_Product AS 
+SELECT 
+    DimProductID
+    ,ProductID
+    ,ProductTypeID
+    ,ProductCategoryID
+    ,ProductName
+    ,ProductType
+    ,ProductCategory
+    ,ProductRetailPrice
+    ,ProductWholesalePrice
+    ,ProductCost
+    ,ProductRetailProfit
+    ,ProductWholesaleUnitProfit
+    ,ProductProfitMarginUnitPercent
+FROM Dim_Product;
+
+SELECT * FROM View_Dim_Product;
+
+--Dim_Reseller View
+CREATE OR REPLACE SECURE VIEW View_Dim_Reseller AS 
+SELECT
+    DimResellerID
+    ,DimLocationID
+    ,ResellerID
+    ,ResellerName
+    ,ContactName
+    ,PhoneNumber
+    ,Email
+FROM Dim_Reseller;
+
+SELECT * FROM View_Dim_Reseller;
+
+--Dim_Store View
+CREATE OR REPLACE SECURE VIEW View_Dim_Store AS 
+SELECT 
+    DimStoreID
+    ,DimLocationID
+    ,SourceStoreID
+    ,StoreName
+    ,StoreNumber
+    ,StoreManager
+FROM Dim_Store;
+
+SELECT * FROM View_Dim_Store;
+
+--Fact_ProductSalesTarget View
+CREATE OR REPLACE SECURE VIEW View_Fact_ProductSalesTarget AS
+SELECT
+    DimProductID
+    ,DimTargetDateID
+    ,ProductTargetSalesQuantity
+FROM Fact_ProductSalesTarget;
+
+SELECT * FROM View_Fact_ProductSalesTarget;
+
+--Fact_SalesActual View
+CREATE OR REPLACE SECURE VIEW View_Fact_SalesActual AS
+SELECT
+    DimProductID
+    ,DimStoreID
+    ,DimResellerID
+    ,DimCustomerID
+    ,DimChannelID
+    ,DimSaleDateID
+    ,DimLocationID
+    ,SalesHeaderID
+    ,SalesDetailID
+    ,SaleAmount
+    ,SaleQuantity
+    ,SaleUnitPrice
+    ,SaleExtendedCost
+    ,SaleTotalProfit
+FROM Fact_SalesActual;
+
+SELECT * FROM View_Fact_SalesActual;
+
+--Fact_SRCSalesTarget View
+CREATE OR REPLACE SECURE VIEW View_Fact_SRCSalesTarget AS
+SELECT
+    DimStoreID
+    ,DimResellerID
+    ,DimChannelID
+    ,DimTargetDateID
+    ,SalesTargetAmount
+FROM Fact_SRCSalesTarget;
+
+SELECT * FROM View_Fact_SRCSalesTarget;
+
+/************************************************
+***********************Create Aggregate Views****
+************************************************/
+
+/************************************************
+**************************Question #1************
+************************************************/
+--View_SalesTarget
+CREATE OR REPLACE SECURE VIEW View_SalesTarget AS
+SELECT DISTINCT 
+    Dim_Store.StoreName
+    ,Dim_Date.Year
+    ,SUM(Fact_SRCSalesTarget.SalesTargetAmount) AS SalesTarget
+FROM Fact_SRCSalesTarget
+INNER JOIN Dim_Store ON Fact_SRCSalesTarget.DimStoreID = Dim_Store.DimStoreID
+INNER JOIN Dim_Date ON Fact_SRCSalesTarget.DimTargetDateID = Dim_Date.Date_PKey
+WHERE (Dim_Store.StoreName = 'Store 10' OR Dim_Store.StoreName = 'Store 21')
+GROUP BY Dim_Store.StoreName, Dim_Date.Year;
+
+SELECT * FROM View_SalesTarget;
+
+--View_SalesProfit
+CREATE OR REPLACE SECURE VIEW View_SalesProfit AS
+SELECT DISTINCT 
+    Dim_Store.StoreName
+    ,Dim_Date.Year
+    ,SUM(Fact_SalesActual.SaleAmount) AS SaleAmount
+FROM Fact_SalesActual
+INNER JOIN Dim_Store ON Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+INNER JOIN Dim_Date ON Fact_SalesActual.DimSaleDateID = Dim_Date.Date_PKey
+WHERE (Dim_Store.StoreName = 'Store 10' OR Dim_Store.StoreName = 'Store 21')
+GROUP BY Dim_Store.StoreName, Dim_Date.Year;
+
+SELECT * FROM View_SalesProfit;
+
+--View_Month_SalesTarget2014
+CREATE OR REPLACE SECURE VIEW View_Month_SalesTarget2014 AS
+SELECT DISTINCT
+    Dim_Store.StoreName
+    ,Dim_Date.Month_Name
+    ,Dim_Date.Month_Num_In_Year
+    ,Dim_Date.Year
+    ,SUM(Fact_SalesActual.SaleAmount) AS SalesMonthTarget
+FROM Fact_SalesActual
+INNER JOIN Dim_Store ON Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+INNER JOIN Dim_Date ON Fact_SalesActual.DimSaleDateID = Dim_Date.Date_PKey
+WHERE (Dim_Store.StoreName = 'Store 10' OR Dim_Store.StoreName = 'Store 21') AND (Dim_Date.Year=2014)
+GROUP BY Dim_Store.StoreName, Dim_Date.Month_Name, Dim_Date.Month_Num_In_Year, Dim_Date.Year
+ORDER BY Dim_Store.StoreName, Dim_Date.Month_Num_In_Year;
+
+
+--View_Month_SalesAmount2014
+CREATE OR REPLACE SECURE VIEW View_Month_SalesAmount2014 AS
+SELECT DISTINCT
+    Dim_Store.StoreName
+    ,Dim_Date.Month_Name
+    ,Dim_Date.Month_Num_In_Year
+    ,Dim_Date.Year
+    ,SUM(Fact_SRCSalesTarget.SalesTargetAmount) AS SalesMonthAmount
+FROM Fact_SRCSalesTarget
+INNER JOIN Dim_Store ON Fact_SRCSalesTarget.DimStoreID = Dim_Store.DimStoreID
+INNER JOIN Dim_Date ON Fact_SRCSalesTarget.DimTargetDateID = Dim_Date.Date_PKey
+WHERE (Dim_Store.StoreName = 'Store 10' OR Dim_Store.StoreName = 'Store 21') AND (Dim_Date.Year=2014)
+GROUP BY Dim_Store.StoreName, Dim_Date.Month_Name, Dim_Date.Month_Num_In_Year, Dim_Date.Year
+ORDER BY Dim_Store.StoreName, Dim_Date.Month_Num_In_Year;
+
+
+--View_Month_Sales_
+CREATE OR REPLACE SECURE VIEW View_Month_Sales_2014 AS
+(
+SELECT DISTINCT
+    StoreName
+    ,Month_Name
+    ,Month_Num_In_Year
+    ,Year
+    ,SUM(SalesTargetAmount) OVER (PARTITION BY StoreName ORDER BY Month_Num_In_Year) AS Total_Sales_Target_Amount
+    ,SUM(SaleTotalAmount) OVER (PARTITION BY StoreName ORDER BY Month_Num_In_Year) AS Total_Sales_Total_Amount
+    
+FROM
+(
+SELECT StoreName, Month_Name, Month_Num_In_Year, Year, SUM(SalesTargetAmount) AS SalesTargetAmount, SUM(SaleTotalAmount) AS SaleTotalAmount
+
+FROM 
+(
+SELECT Dim_Store.StoreName, Dim_Date.Month_Name, Dim_Date.Month_Num_In_Year, Dim_Date.Year, SUM(Fact_SRCSalesTarget.SalesTargetAmount) AS SalesTargetAmount, 0 AS SaleTotalAmount
+FROM Fact_SRCSalesTarget
+INNER JOIN Dim_Date ON Fact_SRCSalesTarget.DimTargetDateID = Dim_Date.Date_Pkey
+INNER JOIN Dim_Store ON Fact_SRCSalesTarget.DimStoreID = Dim_Store.DimStoreID
+WHERE (Dim_Date.Year = 2014) AND (Dim_Store.StoreName = 'Store 10' OR Dim_Store.StoreName = 'Store 21') 
+GROUP BY Dim_Store.StoreName, Dim_Date.Month_Name, Dim_Date.Month_Num_In_Year, Dim_Date.Year
+
+UNION 
+
+SELECT Dim_Store.StoreName, Dim_Date.Month_Name, Dim_Date.Month_Num_In_Year, Dim_Date.Year, 0 AS SalesTargetAmount, SUM(Fact_SalesActual.SaleAmount) AS SaleTotalAmount
+FROM Fact_SalesActual
+INNER JOIN Dim_Date ON Fact_SalesActual.DimSaleDateID = Dim_Date.Date_PKey
+INNER JOIN Dim_Store ON Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+WHERE (Dim_Date.Year = 2014) AND (Dim_Store.StoreName = 'Store 10' OR Dim_Store.StoreName = 'Store 21')
+GROUP BY Dim_Store.StoreName, Dim_Date.Month_Name, Dim_Date.Month_Num_In_Year, Dim_Date.Year
+)
+GROUP BY StoreName, Month_Name, Month_Num_In_Year, Year
+)
+ORDER BY StoreName, Month_Num_In_Year
+);
+
+SELECT * FROM View_Month_Sales_2014;
+
+/************************************************
+**************************Question #2************
+************************************************/
+--View_Month_SalesTarget_2013
+CREATE OR REPLACE SECURE VIEW View_Month_Sales_2013 AS
+(
+SELECT DISTINCT
+    StoreName
+    ,Month_Name
+    ,Month_Num_In_Year
+    ,Year
+    ,SUM(SalesTargetAmount) OVER (PARTITION BY StoreName ORDER BY Month_Num_In_Year) AS Total_Sales_Target_Amount
+    ,SUM(SaleTotalAmount) OVER (PARTITION BY StoreName ORDER BY Month_Num_In_Year) AS Total_Sales_Total_Amount
+    
+FROM
+(
+SELECT StoreName, Month_Name, Month_Num_In_Year, Year, SUM(SalesTargetAmount) AS SalesTargetAmount, SUM(SaleTotalAmount) AS SaleTotalAmount
+
+FROM 
+(
+SELECT Dim_Store.StoreName, Dim_Date.Month_Name, Dim_Date.Month_Num_In_Year, Dim_Date.Year, SUM(Fact_SRCSalesTarget.SalesTargetAmount) AS SalesTargetAmount, 0 AS SaleTotalAmount
+FROM Fact_SRCSalesTarget
+INNER JOIN Dim_Date ON Fact_SRCSalesTarget.DimTargetDateID = Dim_Date.Date_Pkey
+INNER JOIN Dim_Store ON Fact_SRCSalesTarget.DimStoreID = Dim_Store.DimStoreID
+WHERE (Dim_Date.Year = 2013) AND (Dim_Store.StoreName = 'Store 10' OR Dim_Store.StoreName = 'Store 21') 
+GROUP BY Dim_Store.StoreName, Dim_Date.Month_Name, Dim_Date.Month_Num_In_Year, Dim_Date.Year
+
+UNION 
+
+SELECT Dim_Store.StoreName, Dim_Date.Month_Name, Dim_Date.Month_Num_In_Year, Dim_Date.Year, 0 AS SalesTargetAmount, SUM(Fact_SalesActual.SaleAmount) AS SaleTotalAmount
+FROM Fact_SalesActual
+INNER JOIN Dim_Date ON Fact_SalesActual.DimSaleDateID = Dim_Date.Date_PKey
+INNER JOIN Dim_Store ON Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+WHERE (Dim_Date.Year = 2013) AND (Dim_Store.StoreName = 'Store 10' OR Dim_Store.StoreName = 'Store 21')
+GROUP BY Dim_Store.StoreName, Dim_Date.Month_Name, Dim_Date.Month_Num_In_Year, Dim_Date.Year
+)
+GROUP BY StoreName, Month_Name, Month_Num_In_Year, Year
+)
+ORDER BY StoreName, Month_Num_In_Year
+);
+
+SELECT * FROM View_Month_Sales_2013;
+
+--View_Bonus_Target_2013
+CREATE OR REPLACE SECURE VIEW View_Bonus_Target_2013 AS
+(
+SELECT DISTINCT
+    StoreName
+    ,Year
+    ,SUM(SalesTargetAmount) OVER (PARTITION BY StoreName) AS SalesTarget
+    ,SUM(SaleTotalAmount) OVER (PARTITION BY StoreName) AS TotalSales
+    ,ROUND(TotalSales-SalesTarget) AS DifferenceFromTarget
+    ,ROUND(CASE WHEN DifferenceFromTarget>0 THEN (TotalSales/SalesTarget) ELSE 0 END, 2) AS BonusProportion
+    ,ROUND(CASE WHEN BonusProportion <> 0 THEN 2000000*(BonusProportion/3.16) ELSE 0 END,2) AS BonusAmount
+    --,ROUND(TotalSales/SalesTarget, 2) AS BonusProportion
+    --,ROUND(2000000*BonusProportion,2) AS BonusAmount
+    
+FROM
+(
+SELECT StoreName, Year, SUM(SalesTargetAmount) AS SalesTargetAmount, SUM(SaleTotalAmount) AS SaleTotalAmount
+
+FROM 
+(
+SELECT Dim_Store.StoreName, Dim_Date.Year, SUM(Fact_SRCSalesTarget.SalesTargetAmount) AS SalesTargetAmount, 0 AS SaleTotalAmount
+FROM Fact_SRCSalesTarget
+INNER JOIN Dim_Date ON Fact_SRCSalesTarget.DimTargetDateID = Dim_Date.Date_Pkey
+INNER JOIN Dim_Store ON Fact_SRCSalesTarget.DimStoreID = Dim_Store.DimStoreID
+WHERE (Dim_Date.Year = 2013) AND (Dim_Store.StoreName <> 'Unknown')
+GROUP BY Dim_Store.StoreName, Dim_Date.Year
+
+UNION 
+
+SELECT Dim_Store.StoreName, Dim_Date.Year, 0 AS SalesTargetAmount, SUM(Fact_SalesActual.SaleAmount) AS SaleTotalAmount
+FROM Fact_SalesActual
+INNER JOIN Dim_Date ON Fact_SalesActual.DimSaleDateID = Dim_Date.Date_PKey
+INNER JOIN Dim_Store ON Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+WHERE (Dim_Date.Year = 2013) AND (Dim_Store.StoreName <> 'Unknown')
+GROUP BY Dim_Store.StoreName, Dim_Date.Year
+)
+GROUP BY StoreName, Year
+)
+ORDER BY StoreName
+);
+
+SELECT * FROM View_Bonus_Target_2013;
+
+/************************************************
+**************************Question #3************
+************************************************/
+--View_Sales_By_Day
+CREATE OR REPLACE SECURE VIEW View_Sales_By_Day AS 
+SELECT DISTINCT
+    Dim_Store.StoreName
+    ,Dim_Date.Year
+    ,Dim_Date.Date
+    ,SUM(Fact_SalesActual.SaleAmount) AS Product_Sale_Amount
+FROM Fact_SalesActual
+    INNER JOIN Dim_Date
+    ON Fact_SalesActual.DimSaleDateID = Dim_Date.Date_Pkey
+    INNER JOIN Dim_Store
+    ON Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+WHERE (Dim_Store.StoreName = 'Store 10' OR Dim_Store.StoreName = 'Store 21')
+GROUP BY Dim_Store.StoreName, Dim_Date.Year, Dim_Date.Date
+;
+
+SELECT * FROM View_Sales_By_Day;
+
+--_View_PSales_Day
+CREATE OR REPLACE SECURE VIEW View_PSales_Day AS 
+SELECT DISTINCT 
+    Dim_Product.ProductCategory
+    ,Dim_Product.ProductType
+    ,Dim_Product.ProductName
+    ,Dim_Date.Year
+    ,Dim_Date.Date
+    ,SUM(Fact_SalesActual.SaleAmount) AS Product_Sale_Amount
+    ,Dim_Store.StoreName
+FROM Fact_SalesActual
+    INNER JOIN Dim_Product
+    ON Fact_SalesActual.DimProductID = Dim_Product.DimProductID 
+    INNER JOIN Dim_Date
+    ON Fact_SalesActual.DimSaleDateID = Dim_Date.Date_Pkey
+    INNER JOIN Dim_Store
+    ON Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID
+WHERE(Dim_Store.StoreName = 'Store 10' OR Dim_Store.StoreName = 'Store 21') AND Fact_SalesActual.DimProductID>0
+GROUP BY Dim_Product.ProductCategory, Dim_Product.ProductType,Dim_Product.ProductName, Dim_Date.Year, Dim_Date.Date, Dim_Store.StoreName
+;
+
+SELECT * FROM View_PSales_Day;
+
+/************************************************
+**************************Question #4************
+************************************************/
+
+--View_2013_Store_Location_Sales
+CREATE OR REPLACE SECURE VIEW View_Store_Location_Sales AS
+SELECT DISTINCT
+    Dim_Store.StoreName
+    --,Dim_Date.Date
+    ,Dim_Date.Date
+    ,Dim_Date.Year
+    ,Dim_Location.City
+    ,Dim_Location.State_Province
+    ,Dim_Location.PostalCode
+    ,SUM(Fact_SalesActual.SaleAmount) AS SaleTotalAmount
+    ,SUM(Fact_SalesActual.SaleQuantity) AS SaleTotalQuantity
+    ,SUM(Fact_SalesActual.SaleTotalProfit) AS SaleTotalProfit
+FROM Fact_SalesActual
+    INNER JOIN Dim_Store
+    ON Fact_SalesActual.DimStoreID = Dim_Store.DimStoreID 
+    INNER JOIN Dim_Date
+    ON Fact_SalesActual.DimSaleDateID = Dim_Date.Date_PKey
+    INNER JOIN Dim_Location
+    ON Fact_SalesActual.DimLocationID = Dim_Location.DimLocationID
+WHERE (Dim_Location.State_Province <> 'Unknown')
+GROUP BY Dim_Store.StoreName, Dim_Date.Date, Dim_Date.Year, Dim_Location.City, Dim_Location.State_Province, Dim_Location.PostalCode
+ORDER BY Dim_Store.StoreName;
+
+SELECT * FROM View_Store_Location_Sales;
+
+--View_Store_Location_Target
+CREATE OR REPLACE SECURE VIEW View_Store_Location_Target AS
+SELECT DISTINCT
+    Dim_Store.StoreName
+    ,Dim_Date.Date
+    ,Dim_Date.Year
+    ,Dim_Location.City
+    ,Dim_Location.State_Province
+    ,Dim_Location.PostalCode
+    ,SUM(Fact_SRCSalesTarget.SalesTargetAmount) AS Store_Target
+FROM Fact_SRCSalesTarget
+    INNER JOIN Dim_Store
+    ON Fact_SRCSalesTarget.DimStoreID = Dim_Store.DimStoreID 
+    INNER JOIN Dim_Date
+    ON Fact_SRCSalesTarget.DimTargetDateID = Dim_Date.Date_PKey
+    INNER JOIN Dim_Location
+    ON Dim_Store.DimLocationID = Dim_Location.DimLocationID
+WHERE (Dim_Location.State_Province <> 'Unknown')
+GROUP BY Dim_Store.StoreName, Dim_Date.Date, Dim_Date.Year, Dim_Location.City, Dim_Location.State_Province,Dim_Location. PostalCode
+ORDER BY Dim_Store.StoreName;
+
+SELECT * FROM View_Store_Location_Target;
