@@ -1,0 +1,61 @@
+id,name,rotation_period,orbital_period,diameter,climate,gravity,terrain,surface_water,population
+1,Alderaan,24,364,12500,temperate,1 standard,grasslands-mountains,40,2000000000
+2,Yavin IV,24,4818,10200,temperate-tropical,1 standard,jungle- rainforests,8,1000
+3,Hoth,23,549,7200,frozen,1.1 standard,tundra-ice caves-mountain ranges,100,0
+4,Dagobah,23,341,8900,murky,N/A,swamp-jungles,8,0
+5,Bespin,12,5110,118000,temperate,1.5 (surface)- 1 standard (Cloud City),gas giant,0,6000000
+6,Endor,18,402,4900,temperate,0.85 standard,forests- mountains- lakes,8,30000000
+7,Naboo,26,312,12120,temperate,1 standard,grassy hills- swamps- forests- mountains,12,4500000000
+8,Coruscant,24,368,12240,temperate,1 standard,cityscape- mountains,0,1.00E+12
+9,Kamino,27,463,19720,temperate,1 standard,ocean,100,1000000000
+10,Geonosis,30,256,11370,temperate- arid,0.9 standard,rock- desert- mountain- barren,5,1.00E+11
+11,Utapau,27,351,12900,temperate- arid- windy,1 standard,scrublands- savanna- canyons- sinkholes,0.9,95000000
+12,Mustafar,36,412,4200,hot,1 standard,volcanoes- lava rivers- mountains- caves,0,20000
+13,Kashyyyk,26,381,12765,tropical,1 standard,jungle- forests- lakes- rivers,60,45000000
+14,Polis Massa,24,590,0,artificial temperate ,0.56 standard,airless asteroid,0,1000000
+15,Mygeeto,12,167,10088,frigid,1 standard,glaciers- mountains- ice canyons,0,19000000
+16,Felucia,34,231,9100,hot- humid,0.75 standard,fungus forests,0,8500000
+17,Cato Neimoidia,25,278,0,temperate- moist,1 standard,mountains- fields- forests- rock arches,0,10000000
+18,Saleucami,26,392,14920,hot,NA,caves- desert- mountains- volcanoes,0,1400000000
+19,Stewjon,25,452,0,temperate,1 standard,grass,0,0
+20,Eriadu,24,360,13490,polluted,1 standard,cityscape,0,22000000000
+21,Corellia,25,329,11000,temperate,1 standard,plains- urban- hills- forests,70,3000000000
+22,Rodia,29,305,7549,hot,1 standard,jungles- oceans- urban- swamps,60,1300000000
+23,Nal Hutta,87,413,12150,temperate,1 standard,urban- oceans- swamps- bogs,0,7000000000
+24,Dantooine,25,378,9830,temperate,1 standard,oceans- savannas- mountains- grasslands,0,1000
+25,Bestine IV,26,680,6400,temperate,NA,rocky islands- oceans,98,62000000
+26,Ord Mantell,26,334,14050,temperate,1 standard,plains- seas- mesas,10,4000000000
+27,Trandosha,25,371,0,arid,0.62 standard,mountains- seas- grasslands- deserts,0,42000000
+28,Socorro,20,326,0,arid,1 standard,deserts- mountains,0,300000000
+29,Mon Cala,21,398,11030,temperate,1,oceans- reefs- islands,100,27000000000
+30,Chandrila,20,368,13500,temperate,1,plains- forests,40,1200000000
+31,Sullust,20,263,12780,superheated,1,mountains- volcanoes- rocky deserts,5,18500000000
+32,Toydaria,21,184,7900,temperate,1,swamps- lakes,0,11000000
+33,Malastare,26,201,18880,arid- temperate- tropical,1.56,swamps- deserts- jungles- mountains,0,2000000000
+34,Dathomir,24,491,10480,temperate,0.9,forests- deserts- savannas,0,5200
+35,Ryloth,30,305,10600,temperate- arid- subartic,1,mountains- valleys- deserts- tundra,5,1500000000
+36,Aleen Minor,0,0,0,NA,NA,NA,0,0
+37,Vulpter,22,391,14900,temperate- artic,1,urban- barren,0,421000000
+38,Troiken,0,0,0,NA,NA,desert- tundra- rainforests- mountains,0,0
+39,Tund,48,1770,12190,NA,NA,barren- ash,0,0
+40,Haruun Kal,25,383,10120,temperate,0.98,toxic cloudsea- plateaus- volcanoes,0,705300
+41,Cerea,27,386,0,temperate,1,verdant,20,450000000
+42,Glee Anselm,33,206,15600,tropical- temperate,1,lakes- islands- swamps- seas,80,500000000
+43,Iridonia,29,413,0,NA,NA,rocky canyons- acid pools,0,0
+44,Tholoth,0,0,0,NA,NA,NA,0,0
+45,Iktotch,22,481,0,arid- rocky- windy,1,rocky,0,0
+46,Quermia,0,0,0,NA,NA,NA,0,0
+47,Dorin,22,409,13400,temperate,1,NA,0,0
+48,Champala,27,318,0,temperate,1,oceans- rainforests- plateaus,0,3500000000
+49,Mirial,0,0,0,NA,NA,deserts,0,0
+50,Serenno,0,0,0,NA,NA,rainforests- rivers- mountains,0,0
+51,Concord Dawn,0,0,0,NA,NA,jungles- forests- deserts,0,0
+52,Zolan,0,0,0,NA,NA,NA,0,0
+53,Ojom,0,0,0,frigid,NA,oceans- glaciers,100,500000000
+54,Skako,27,384,0,temperate,1,urban- vines,0,5.00E+11
+55,Muunilinst,28,412,13800,temperate,1,plains- forests- hills- mountains,25,5000000000
+56,Shili,0,0,0,temperate,1,cities- savannahs- seas- plains,0,0
+57,Kalee,23,378,13850,arid- temperate- tropical,1,rainforests- cliffs- canyons- seas,0,4000000000
+58,Umbara,0,0,0,NA,NA,NA,0,0
+59,Tatooine,23,304,10465,arid,1 standard,desert,1,200000
+60,Jakku,0,0,0,0,NA,deserts,0,0
